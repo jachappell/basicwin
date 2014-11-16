@@ -1,5 +1,5 @@
 <p>
-This is a c++ version of the basicwin example from <a href="http://www.amazon.com/exec/obidos/ASIN/1565920023/ref%3Dnosim/msn011-20"><em> Xlib Programming Manual</em></a>.
+This is a c++ version of the basicwin example from <a href="http://www.amazon.com/exec/obidos/ASIN/1565920023/ref%3Dnosim/msn011-20"><em>Xlib Programming Manual for Version 11, Rel. 5, Vol. 1</em></a>.
 <p>
 See:
 </p>
