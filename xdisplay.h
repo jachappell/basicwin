@@ -73,6 +73,8 @@ public:
   unsigned long GetColor(const char *color_name,
                          int screen_num = USE_DEFAULT_SCREEN) const ;
 
+  double AspectRatio(int screen_num = USE_DEFAULT_SCREEN);
+
 private:
   Display *display_ ;
   //
@@ -176,5 +178,19 @@ CXDisplay::GetColor(const char *color_name, int screen_num) const
 
   return near_color.pixel ;
 }
+
+
+inline double CXDisplay::AspectRatio(int screen_num)
+{
+  int s = screen(screen_num);
+
+  double aspect_ratio = static_cast<double>(GetDisplayHeight(s)
+                                         + GetDisplayHeightMM(s)) /
+                        static_cast<double>(GetDisplayWidth(s)
+                                         + GetDisplayWidthMM(s));
+
+  return aspect_ratio;
+}
+
 
 #endif
