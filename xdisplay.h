@@ -2,7 +2,7 @@
  *
  * xdisplay.h -- Wrap Display with a boost::shared_ptr
  *
- *  Copyright (C) 2006 by James A. Chappell (rlrrlrll@gmail.com)
+ *  Copyright (C) 2014 by James A. Chappell (rlrrlrll@gmail.com)
  *
  *  Permission is hereby granted, free of charge, to any person
  *  obtaining a copy of this software and associated documentation
