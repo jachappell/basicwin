@@ -4,7 +4,7 @@ This is a c++ version of the basicwin example from <a href="http://www.amazon.co
 See:
 </p>
 <ul>
-<li><a href="http://www.storage-b.com/c/x/23">X Windows Programming in C++: Part I</a></li>
-<li><a href="http://www.storage-b.com/c/x/24">X Windows Programming in C++: Part II</a></li>
-<li><a href="http://www.storage-b.com/c/x/25">X Windows Programming in C++: Part III</a></li>
+<li><a href="https://www.storage-b.com/c/x/23">X Windows Programming in C++: Part I</a></li>
+<li><a href="https://www.storage-b.com/c/x/24">X Windows Programming in C++: Part II</a></li>
+<li><a href="https://www.storage-b.com/c/x/25">X Windows Programming in C++: Part III</a></li>
 </ul>
