@@ -2,7 +2,7 @@ PROG=basicwin
 OBJDIR=.obj
 CC=g++
 
-CFLAGS = -Wall -std=c++0x
+CFLAGS = -Wall -std=c++14
 LDFLAGS = -lX11
 
 $(shell mkdir -p $(OBJDIR)) 
