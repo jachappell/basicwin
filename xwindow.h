@@ -2,7 +2,7 @@
  *
  * xwindow.h -- Wrap Window with a boost::shared_ptr
  *
- *  Copyright (C) 2007 by James A. Chappell (rlrrlrll@gmail.com)
+ *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
  *  Permission is hereby granted, free of charge, to any person
  *  obtaining a copy of this software and associated documentation
@@ -42,7 +42,7 @@ class CXWindow ;
 
 typedef boost::shared_ptr<CXWindow> CXWindowPtr ;
 
-class CXWindow : private boost::noncopyable
+class CXWindow
 {
 public:
 
@@ -80,6 +80,10 @@ public:
   {
     XDestroyWindow(*display_, window_) ;
   }
+
+  // no copy
+  CXWindow(const CXWindow&) = delete;
+  CXWindow& operator=(const CXWindow&) = delete;
 
   operator Window () const { return window_ ; }
 

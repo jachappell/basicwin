@@ -2,7 +2,7 @@
  *
  * xdisplay.h -- Wrap Display with a boost::shared_ptr
  *
- *  Copyright (C) 2014 by James A. Chappell (rlrrlrll@gmail.com)
+ *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
  *  Permission is hereby granted, free of charge, to any person
  *  obtaining a copy of this software and associated documentation
@@ -31,7 +31,6 @@
 #include <exception>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/noncopyable.hpp>
 
 #define USE_DEFAULT_SCREEN -1
 
@@ -48,12 +47,16 @@ class CXDisplay ;
 
 typedef boost::shared_ptr<CXDisplay> CXDisplayPtr ;
 
-class CXDisplay : private boost::noncopyable
+class CXDisplay
 {
 public:
   static CXDisplayPtr OpenDisplay(const char *display_name = NULL) ;
 
   ~CXDisplay() ;
+
+  // no copy
+  CXDisplay(const CXDisplay&) = delete;
+  CXDisplay& operator=(const CXDisplay&) = delete;
 
   Display* operator->() { return display_ ; }
   operator Display* () const { return display_ ; }

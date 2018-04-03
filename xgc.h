@@ -2,7 +2,7 @@
  *
  * xgc.h -- Define wrapper around a Graphic Context
  *
- *  Copyright (C) 2006 by James A. Chappell (rlrrlrll@gmail.com)
+ *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
  *  Permission is hereby granted, free of charge, to any person
  *  obtaining a copy of this software and associated documentation
@@ -28,20 +28,24 @@
 
 #include "xwindow.h"
 
-class CXGC : private boost::noncopyable
+class CXGC
 {
 public:
   CXGC(CXDisplayPtr& display, Window win,
        unsigned long valuemask, XGCValues *values)
     : display_(display)
   {
-    gc_ = XCreateGC(*display_, win, valuemask, values) ;
+    gc_ = XCreateGC(*display_, win, valuemask, values);
   }
 
   ~CXGC()
   {
     XFreeGC(*display_, gc_);
   }
+  
+  // no copy
+  CXGC(const CXGC&) = delete;
+  CXGC& operator=(const CXGC&) = delete;
 
   void SetFont(Font fid) const
   {

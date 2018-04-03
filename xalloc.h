@@ -41,7 +41,7 @@ public:
   {
     return "bad_XAlloc" ; // for now
   }
-} ;
+};
 
 
 template<class T, T (*alloc())> class _XAlloc 

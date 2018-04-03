@@ -2,7 +2,7 @@
  *
  * xfont.h -- Define a wrapper around a XFontStruct pointer 
  *
- *  Copyright (C) 2006 by James A. Chappell (rlrrlrll@gmail.com)
+ *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
  *  Permission is hereby granted, free of charge, to any person
  *  obtaining a copy of this software and associated documentation
@@ -38,7 +38,7 @@ public:
 } ;
 
 
-class CXFont : private boost::noncopyable
+class CXFont
 {
 public:
   CXFont(CXDisplayPtr display, const char *fontname) :
@@ -55,6 +55,10 @@ public:
   {
     XFreeFont(*display_, font_);
   }
+
+   // no copy
+  CXFont(const CXFont&) = delete;
+  CXFont& operator=(const CXFont&) = delete;
 
   XFontStruct* operator->() { return font_ ; }
   operator XFontStruct* () const { return font_ ; }
