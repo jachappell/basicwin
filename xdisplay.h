@@ -2,7 +2,7 @@
  *
  * xdisplay.h -- Wrap Display with a boost::shared_ptr
  *
- *  Copyright (C) 2006 by James A. Chappell (rlrrlrll@gmail.com)
+ *  Copyright (C) 2014 by James A. Chappell (rlrrlrll@gmail.com)
  *
  *  Permission is hereby granted, free of charge, to any person
  *  obtaining a copy of this software and associated documentation
@@ -72,6 +72,8 @@ public:
 
   unsigned long GetColor(const char *color_name,
                          int screen_num = USE_DEFAULT_SCREEN) const ;
+
+  double AspectRatio(int screen_num = USE_DEFAULT_SCREEN);
 
 private:
   Display *display_ ;
@@ -176,5 +178,19 @@ CXDisplay::GetColor(const char *color_name, int screen_num) const
 
   return near_color.pixel ;
 }
+
+
+inline double CXDisplay::AspectRatio(int screen_num)
+{
+  int s = screen(screen_num);
+
+  double aspect_ratio = static_cast<double>(GetDisplayHeight(s)
+                                         + GetDisplayHeightMM(s)) /
+                        static_cast<double>(GetDisplayWidth(s)
+                                         + GetDisplayWidthMM(s));
+
+  return aspect_ratio;
+}
+
 
 #endif
