@@ -79,6 +79,6 @@ private:
   CXGC() {}
 } ;
 
-typedef boost::shared_ptr<CXGC> CXGCPtr ;
+typedef std::shared_ptr<CXGC> CXGCPtr ;
 
 #endif

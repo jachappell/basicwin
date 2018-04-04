@@ -75,6 +75,6 @@ private:
   CXFont() {} ;
 } ;
 
-typedef boost::shared_ptr<CXFont> CXFontPtr ;
+typedef std::shared_ptr<CXFont> CXFontPtr ;
 
 #endif

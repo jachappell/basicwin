@@ -12,7 +12,6 @@
 #include "bitmaps/icon_bitmap"
 
 using namespace std ;
-using namespace boost ;
 
 #define BITMAPDEPTH 1
 #define TOO_SMALL 0
@@ -51,15 +50,15 @@ static void draw_text(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
   /* copy numbers into string variables */
 
   string cd_height(" Height - "
-                   + lexical_cast<string>(display->GetDisplayHeight())
+                   + boost::lexical_cast<string>(display->GetDisplayHeight())
                    + " pixels") ;
 
   string cd_width(" Width  - "
-                  + lexical_cast<string>(display->GetDisplayWidth()) 
+                  + boost::lexical_cast<string>(display->GetDisplayWidth()) 
                   + " pixels") ;
 
   string cd_depth(" Depth  - "
-                  + lexical_cast<string>(display->GetDefaultDepth())
+                  + boost::lexical_cast<string>(display->GetDefaultDepth())
                   + " plane(s)") ;
 
   /* To center strings vertically, we place the first string
@@ -312,19 +311,7 @@ int main(int argc, char **argv)
       } /* end switch */
     } /* end while */
   }
-  catch(bad_CXDisplay& e)
-  {
-    cerr << e.what() << endl ;
-  }
-  catch(bad_CXWindow& e)
-  {
-    cerr << e.what() << endl ;
-  }
-  catch(bad_XAlloc& e)  
-  {
-    cerr << e.what() << endl ;
-  }
-  catch(bad_CXFont& e)
+  catch(exception const & e)
   {
     cerr << e.what() << endl ;
   }

@@ -1,6 +1,6 @@
 /*******************************************************************
  *
- * xwindow.h -- Wrap Window with a boost::shared_ptr
+ * xwindow.h -- Wrap Window with a shared_ptr
  *
  *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
@@ -40,7 +40,7 @@ public:
 
 class CXWindow ;
 
-typedef boost::shared_ptr<CXWindow> CXWindowPtr ;
+typedef std::shared_ptr<CXWindow> CXWindowPtr ;
 
 class CXWindow
 {
