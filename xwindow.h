@@ -28,16 +28,6 @@
 
 #include "xdisplay.h"
 
-class bad_CXWindow : public std::exception
-{
-public:
-  virtual const char* what() const throw()
-  {
-    return "bad_CXWindow" ; // for now
-  }
-} ;
-
-
 class CXWindow ;
 
 typedef std::shared_ptr<CXWindow> CXWindowPtr ;
@@ -85,6 +75,15 @@ public:
   CXWindow(const CXWindow&) = delete;
   CXWindow& operator=(const CXWindow&) = delete;
 
+  class Exception : public std::exception
+  {
+  public:
+    virtual const char* what() const throw()
+    {
+      return "bad_CXWindow" ; // for now
+    }
+  };
+
   operator Window () const { return window_ ; }
 
   CXDisplayPtr& Display() { return display_ ; }
@@ -93,7 +92,7 @@ public:
   {
     if (!XGetWindowAttributes(*display_, window_, &attr))
     {
-      throw bad_CXWindow() ;
+      throw CXWindow::Exception();
     }
   }
 

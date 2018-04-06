@@ -28,16 +28,6 @@
 
 #include "xdisplay.h"
 
-class bad_CXFont : public std::exception
-{
-public:
-  virtual const char* what() const throw()
-  {
-    return "bad_CXFont" ; // for now
-  }
-} ;
-
-
 class CXFont
 {
 public:
@@ -47,7 +37,7 @@ public:
     font_ = XLoadQueryFont(*display_, fontname) ;
     if (!font_)
     {
-      throw bad_CXFont() ;
+      throw CXFont::Exception() ;
     }
   }
 
@@ -59,6 +49,16 @@ public:
    // no copy
   CXFont(const CXFont&) = delete;
   CXFont& operator=(const CXFont&) = delete;
+
+  class Exception : public std::exception
+  {
+    public:
+      virtual const char* what() const throw()
+      {
+        return "bad_CXFont" ; // for now
+      }
+  };
+
 
   XFontStruct* operator->() { return font_ ; }
   operator XFontStruct* () const { return font_ ; }
