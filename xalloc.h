@@ -3,7 +3,7 @@
  * xlloc.h -- Define wrappers around pointers to ClassHint, IconSize, 
  *            SizeHints, and WMHints
  *
- *  Copyright (C) 2006 by James A. Chappell (rlrrlrll@gmail.com)
+ *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
  *  Permission is hereby granted, free of charge, to any person
  *  obtaining a copy of this software and associated documentation
@@ -30,18 +30,6 @@
 #include <X11/Xutil.h>
 
 #include <exception>
-
-//
-// Exception, thrown if alloc fails
-//
-class bad_XAlloc : public std::exception
-{
-public:
-  virtual const char* what() const throw()
-  {
-    return "bad_XAlloc" ; // for now
-  }
-};
 
 
 template<class T, T (*alloc())> class _XAlloc 
@@ -81,16 +69,16 @@ public:
 //
   ~_XAlloc()
   {
-    XFree(p_) ; 
+    XFree(_p) ; 
   }
 //
 // Assignment operators
 //
   _XAlloc& operator= (const _XAlloc& a)
   {
-    if (p_ != a.p_)
+    if (_p != a._p)
     {
-      copy(a.p_) ;
+      copy(a._p) ;
     }
    
     return *this ;
@@ -98,7 +86,7 @@ public:
 
   _XAlloc& operator= (const T *a)
   {
-    if (p_ != a)
+    if (_p != a)
     {
       copy(a) ;
     }
@@ -108,36 +96,45 @@ public:
 
   _XAlloc& operator= (const T& a)
   {
-    if (p_ != &a)
+    if (_p != &a)
     {
       copy(&a) ;
     }
    
     return *this ;
   }
+
+  class Exception : public std::exception
+  {
+  public:
+    virtual const char* what() const throw()
+    {
+      return "bad_XAlloc"; // for now
+    }
+  };
 //
 // More operators
 //
-  T* operator->() { return p_ ; }
-  operator T* () const { return p_ ; }
+  T* operator->() { return _p; }
+  operator T* () const { return _p; }
 
 private:
 
   void allocator()
   {
-    p_ = alloc() ;
-    if (!p_)
+    _p = alloc();
+    if (!_p)
     {
-      throw bad_XAlloc() ;
+      throw _XAlloc::Exception();
     }
   }
 
   void copy (const T *p)
   {
-    *p_ = *p ;
+    *_p = *p ;
   }
   
-  T *p_ ;
+  T *_p ;
 } ;
 
 //

@@ -28,16 +28,6 @@
 
 #include "xdisplay.h"
 
-class bad_CXWindow : public std::exception
-{
-public:
-  virtual const char* what() const throw()
-  {
-    return "bad_CXWindow" ; // for now
-  }
-} ;
-
-
 class CXWindow ;
 
 typedef std::shared_ptr<CXWindow> CXWindowPtr ;
@@ -78,42 +68,52 @@ public:
 
   ~CXWindow()
   {
-    XDestroyWindow(*display_, window_) ;
+    XDestroyWindow(*_display, _window) ;
   }
 
   // no copy
   CXWindow(const CXWindow&) = delete;
   CXWindow& operator=(const CXWindow&) = delete;
 
-  operator Window () const { return window_ ; }
+  class Exception : public std::exception
+  {
+  public:
+    virtual const char* what() const throw()
+    {
+      return "bad_CXWindow"; // for now
+    }
+  };
 
-  CXDisplayPtr& Display() { return display_ ; }
+
+  operator Window () const { return _window ; }
+
+  CXDisplayPtr& Display() { return _display ; }
 
   void GetWindowAttributes(XWindowAttributes &attr) const
   {
-    if (!XGetWindowAttributes(*display_, window_, &attr))
+    if (!XGetWindowAttributes(*_display, _window, &attr))
     {
-      throw bad_CXWindow() ;
+      throw CXWindow::Exception();
     }
   }
 
   void Map(bool map_sub = true) const
   {
-    XMapWindow(*display_, window_);
+    XMapWindow(*_display, _window);
     if (map_sub)
     {
-      XMapSubwindows(*display_, window_);
+      XMapSubwindows(*_display, _window);
     }
   }
 
   void Unmap() const
   {
-    XUnmapWindow(*display_, window_) ;
+    XUnmapWindow(*_display, _window) ;
   }
 
 private:
-  Window window_ ;
-  CXDisplayPtr display_ ;
+  Window _window ;
+  CXDisplayPtr _display ;
 
   CXWindow(CXDisplayPtr& display, Window parent,
            int x, int y,
@@ -121,9 +121,9 @@ private:
            unsigned int border_width,
            unsigned long border,
            unsigned long background)
-    : display_(display)
+    : _display(display)
   {
-    window_ = XCreateSimpleWindow(*display_, parent,
+    _window = XCreateSimpleWindow(*_display, parent,
                                    x, y, width, height, 
                                    border_width, border, background) ;
   }

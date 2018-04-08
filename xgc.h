@@ -33,14 +33,14 @@ class CXGC
 public:
   CXGC(CXDisplayPtr& display, Window win,
        unsigned long valuemask, XGCValues *values)
-    : display_(display)
+    : _display(display)
   {
-    gc_ = XCreateGC(*display_, win, valuemask, values);
+    _gc = XCreateGC(*_display, win, valuemask, values);
   }
 
   ~CXGC()
   {
-    XFreeGC(*display_, gc_);
+    XFreeGC(*_display, _gc);
   }
   
   // no copy
@@ -49,32 +49,32 @@ public:
 
   void SetFont(Font fid) const
   {
-    XSetFont(*display_, gc_, fid);
+    XSetFont(*_display, _gc, fid);
   }
   
   void SetForeground(unsigned long foreground) const
   {
-    XSetForeground(*display_, gc_, foreground);
+    XSetForeground(*_display, _gc, foreground);
   }
 
   void SetLineAttributes(unsigned int line_width, int line_style, 
                          int cap_style, int join_style) const
   {
-    XSetLineAttributes(*display_, gc_, line_width, line_style, 
+    XSetLineAttributes(*_display, _gc, line_width, line_style, 
                        cap_style, join_style) ;
   }
 
   void SetDashes(int dash_offset, char *dash_list, int n) const
   {
-    XSetDashes(*display_, gc_, dash_offset, dash_list, n) ;
+    XSetDashes(*_display, _gc, dash_offset, dash_list, n) ;
   }
 
-  GC operator->() { return gc_ ; }
-  operator GC () const { return gc_ ; }
+  GC operator->() { return _gc ; }
+  operator GC () const { return _gc ; }
 
 private:
-  GC gc_ ;
-  CXDisplayPtr display_ ;
+  GC _gc ;
+  CXDisplayPtr _display ;
 
   CXGC() {}
 } ;

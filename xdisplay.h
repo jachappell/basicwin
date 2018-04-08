@@ -33,15 +33,6 @@
 
 #define USE_DEFAULT_SCREEN -1
 
-class bad_CXDisplay : public std::exception
-{
-public:
-  virtual const char* what() const throw()
-  {
-    return "bad_CXDisplay" ; // for now
-  }
-};
-
 class CXDisplay ;
 
 typedef std::shared_ptr<CXDisplay> CXDisplayPtr ;
@@ -58,6 +49,15 @@ public:
   // no copy
   CXDisplay(const CXDisplay&) = delete;
   CXDisplay& operator=(const CXDisplay&) = delete;
+
+  class Exception : public std::exception
+  {
+  public:
+    virtual const char* what() const throw()
+    {
+      return "bad_CXDisplay"; // for now
+    }
+  };
 
   Display* operator->() { return _display ; }
   operator Display* () const { return _display ; }
@@ -107,7 +107,7 @@ inline CXDisplay::CXDisplay(const char *display_name)
   _display = XOpenDisplay(display_name) ;
   if (!_display)
   {
-    throw bad_CXDisplay() ;
+    throw CXDisplay::Exception() ;
   }
 }
 

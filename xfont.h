@@ -28,49 +28,48 @@
 
 #include "xdisplay.h"
 
-class bad_CXFont : public std::exception
-{
-public:
-  virtual const char* what() const throw()
-  {
-    return "bad_CXFont" ; // for now
-  }
-} ;
-
-
 class CXFont
 {
 public:
   CXFont(CXDisplayPtr display, const char *fontname) :
-    display_(display)
+    _display(display)
   {
-    font_ = XLoadQueryFont(*display_, fontname) ;
-    if (!font_)
+    _font = XLoadQueryFont(*_display, fontname) ;
+    if (!_font)
     {
-      throw bad_CXFont() ;
+      throw CXFont::Exception();
     }
   }
 
   ~CXFont()
   {
-    XFreeFont(*display_, font_);
+    XFreeFont(*_display, _font);
   }
 
    // no copy
   CXFont(const CXFont&) = delete;
   CXFont& operator=(const CXFont&) = delete;
 
-  XFontStruct* operator->() { return font_ ; }
-  operator XFontStruct* () const { return font_ ; }
+  class Exception : public std::exception
+  {
+  public:
+    virtual const char* what() const throw()
+    {
+      return "bad_CXFont"; // for now
+    }
+  };
 
-  Font Id() const { return font_->fid ; }
+  XFontStruct* operator->() { return _font ; }
+  operator XFontStruct* () const { return _font ; }
 
-  int FontHeight() const { return font_->ascent + font_->descent ; }
-  short MaxCharWidth() const { return font_->max_bounds.width ; }
+  Font Id() const { return _font->fid ; }
+
+  int FontHeight() const { return _font->ascent + _font->descent ; }
+  short MaxCharWidth() const { return _font->max_bounds.width ; }
 
 private:
-  XFontStruct *font_ ;
-  CXDisplayPtr display_ ;
+  XFontStruct *_font ;
+  CXDisplayPtr _display ;
   
   CXFont() {} ;
 } ;
