@@ -107,7 +107,7 @@ inline CXDisplay::CXDisplay(const char *display_name)
   _display = XOpenDisplay(display_name) ;
   if (!_display)
   {
-    throw CXDisplay::Exception() ;
+    throw CXDisplay::Exception();
   }
 }
 
