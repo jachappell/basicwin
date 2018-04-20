@@ -78,13 +78,17 @@ public:
                          int screen_num = USE_DEFAULT_SCREEN) const ;
 
   double AspectRatio(int screen_num = USE_DEFAULT_SCREEN);
-
-private:
-  Display *_display ;
   //
   // Only call via static member function OpenDisplay
   //
-  CXDisplay(const char *display_name) ;
+private:
+  struct _private_constructor_tag
+    { explicit _private_constructor_tag() = default; };
+public:
+  CXDisplay(const char *display_name, _private_constructor_tag);
+
+private:
+  Display *_display ;
  
   //
   // see if s indicates using the default screen, otherwise
@@ -98,11 +102,11 @@ private:
 
 inline CXDisplayPtr CXDisplay::OpenDisplay(const char *display_name)
 {
-  return CXDisplayPtr(new CXDisplay(display_name)) ;
+  return std::make_shared<CXDisplay>(display_name, _private_constructor_tag{});
 }
 
 
-inline CXDisplay::CXDisplay(const char *display_name)
+inline CXDisplay::CXDisplay(const char *display_name, _private_constructor_tag)
 {
   _display = XOpenDisplay(display_name) ;
   if (!_display)

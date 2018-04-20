@@ -46,6 +46,7 @@ public:
     XFreeFont(*_display, _font);
   }
 
+  CXFont() = delete; 
    // no copy
   CXFont(const CXFont&) = delete;
   CXFont& operator=(const CXFont&) = delete;
@@ -70,8 +71,6 @@ public:
 private:
   XFontStruct *_font ;
   CXDisplayPtr _display ;
-  
-  CXFont() {} ;
 } ;
 
 typedef std::shared_ptr<CXFont> CXFontPtr ;

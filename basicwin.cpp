@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 
   try
   {
-    CXDisplayPtr display(CXDisplay::OpenDisplay()) ;
+    auto display(CXDisplay::OpenDisplay()) ;
 
     /* get screen size from display structure macro */
     int display_width(display->GetDisplayWidth());
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     unsigned int border_width(4);    /* four pixels */
 
     /* create opaque window */
-    CXWindowPtr win(CXWindow::CreateWindow(display,
+    auto win(CXWindow::CreateWindow(display,
                     x, y, width, height, border_width,
                     display->GetBlackPixel(),
                     display->GetWhitePixel())) ;

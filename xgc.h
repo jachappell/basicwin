@@ -42,7 +42,8 @@ public:
   {
     XFreeGC(*_display, _gc);
   }
-  
+
+  CXGC() = delete;  
   // no copy
   CXGC(const CXGC&) = delete;
   CXGC& operator=(const CXGC&) = delete;
@@ -75,8 +76,6 @@ public:
 private:
   GC _gc ;
   CXDisplayPtr _display ;
-
-  CXGC() {}
 } ;
 
 typedef std::shared_ptr<CXGC> CXGCPtr ;

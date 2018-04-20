@@ -71,6 +71,7 @@ public:
     XDestroyWindow(*_display, _window) ;
   }
 
+  CXWindow() = delete;
   // no copy
   CXWindow(const CXWindow&) = delete;
   CXWindow& operator=(const CXWindow&) = delete;
@@ -83,7 +84,6 @@ public:
       return "bad_CXWindow"; // for now
     }
   };
-
 
   operator Window () const { return _window ; }
 
@@ -127,8 +127,6 @@ private:
                                    x, y, width, height, 
                                    border_width, border, background) ;
   }
-
-  CXWindow() {} 
 } ;
 
 #endif

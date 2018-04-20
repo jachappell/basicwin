@@ -40,68 +40,24 @@ public:
 //
   _XAlloc()
   {
-    allocator() ;
+    _p = alloc();
+    if (!_p)
+    {
+      throw _XAlloc::Exception();
+    }
   }
 //
-// Copy Constructor
+// No copy
 //
-  _XAlloc(const _XAlloc& a)
-  {
-    allocator() ;
-    copy(a.p_) ;
-  }
-//
-// More Constructors
-//
-  _XAlloc(const T *a)
-  {
-    allocator() ;
-    copy(a) ;
-  }
+  _XAlloc(const _XAlloc& a) = delete;
+  _XAlloc& operator= (const _XAlloc& a) =delete;
 
-  _XAlloc(const T& a)
-  {
-    allocator() ;
-    copy(&a) ;
-  }
 //
 // Destructor
 //
   ~_XAlloc()
   {
     XFree(_p) ; 
-  }
-//
-// Assignment operators
-//
-  _XAlloc& operator= (const _XAlloc& a)
-  {
-    if (_p != a._p)
-    {
-      copy(a._p) ;
-    }
-   
-    return *this ;
-  }
-
-  _XAlloc& operator= (const T *a)
-  {
-    if (_p != a)
-    {
-      copy(a) ;
-    }
-   
-    return *this ;
-  }
-
-  _XAlloc& operator= (const T& a)
-  {
-    if (_p != &a)
-    {
-      copy(&a) ;
-    }
-   
-    return *this ;
   }
 
   class Exception : public std::exception
@@ -119,20 +75,6 @@ public:
   operator T* () const { return _p; }
 
 private:
-
-  void allocator()
-  {
-    _p = alloc();
-    if (!_p)
-    {
-      throw _XAlloc::Exception();
-    }
-  }
-
-  void copy (const T *p)
-  {
-    *_p = *p ;
-  }
   
   T *_p ;
 } ;
