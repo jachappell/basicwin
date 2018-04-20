@@ -78,6 +78,4 @@ private:
   CXDisplayPtr _display ;
 } ;
 
-typedef std::shared_ptr<CXGC> CXGCPtr ;
-
 #endif

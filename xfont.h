@@ -71,8 +71,6 @@ public:
 private:
   XFontStruct *_font ;
   CXDisplayPtr _display ;
-} ;
-
-typedef std::shared_ptr<CXFont> CXFontPtr ;
+};
 
 #endif

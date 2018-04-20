@@ -34,8 +34,11 @@ typedef std::shared_ptr<CXWindow> CXWindowPtr ;
 
 class CXWindow
 {
-public:
+private:
+  struct _private_constructor_tag
+    { explicit _private_constructor_tag() = default; };
 
+public:
   static CXWindowPtr CreateWindow(CXDisplayPtr& display,
                                   int x, int y,
                                   unsigned int width,
@@ -46,9 +49,10 @@ public:
                                   int screen_num = USE_DEFAULT_SCREEN)
   {
     Window parent(display->GetRootWindow(screen_num)) ;
-    return CXWindowPtr(new CXWindow(display, parent,
+    return std::make_shared<CXWindow>(display, parent,
                                     x, y, width, height, 
-                                    border_width, border, background)) ;
+                                    border_width, border, background,
+                                    _private_constructor_tag{});
   }
   
   
@@ -61,9 +65,10 @@ public:
                                   unsigned long border,
                                   unsigned long background)
   {
-    return CXWindowPtr(new CXWindow(display, *parent,
+    return std::make_shared<CXWindow>(display, *parent,
                                     x, y, width, height, 
-                                    border_width, border, background)) ;
+                                    border_width, border, background,
+                                    _private_constructor_tag{});
   }
 
   ~CXWindow()
@@ -111,22 +116,26 @@ public:
     XUnmapWindow(*_display, _window) ;
   }
 
-private:
-  Window _window ;
-  CXDisplayPtr _display ;
-
+//
+// Only call via static member function OpenDisplay
+//
   CXWindow(CXDisplayPtr& display, Window parent,
            int x, int y,
            unsigned int width, unsigned int height,
            unsigned int border_width,
            unsigned long border,
-           unsigned long background)
+           unsigned long background,
+           _private_constructor_tag)
     : _display(display)
   {
     _window = XCreateSimpleWindow(*_display, parent,
                                    x, y, width, height, 
-                                   border_width, border, background) ;
+                                   border_width, border, background);
   }
+
+private:
+  Window _window ;
+  CXDisplayPtr _display ;
 } ;
 
 #endif

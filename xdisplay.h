@@ -39,6 +39,9 @@ typedef std::shared_ptr<CXDisplay> CXDisplayPtr ;
 
 class CXDisplay
 {
+private:
+  struct _private_constructor_tag
+    { explicit _private_constructor_tag() = default; };
 public:
   static CXDisplayPtr OpenDisplay(const char *display_name = NULL) ;
 
@@ -81,9 +84,6 @@ public:
   //
   // Only call via static member function OpenDisplay
   //
-private:
-  struct _private_constructor_tag
-    { explicit _private_constructor_tag() = default; };
 public:
   CXDisplay(const char *display_name, _private_constructor_tag);
 
