@@ -26,16 +26,16 @@
 #ifndef __XGC_H__
 #define __XGC_H__
 
-#include "xwindow.h"
+#include "xdisplay.h"
 
 class CXGC
 {
 public:
-  CXGC(CXDisplayPtr& display, Window win,
+  CXGC(CXDisplayPtr& display, Drawable d,
        unsigned long valuemask, XGCValues *values)
     : _display(display)
   {
-    _gc = XCreateGC(*_display, win, valuemask, values);
+    _gc = XCreateGC(*_display, d, valuemask, values);
   }
 
   ~CXGC()

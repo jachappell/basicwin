@@ -1,3 +1,4 @@
+#include "xwindow.h"
 #include "xgc.h"
 #include "xfont.h"
 #include "xalloc.h"
