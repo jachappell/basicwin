@@ -1,6 +1,6 @@
 /*******************************************************************
  *
- * xwindow.h -- Wrap Window with a shared_ptr
+ * xwindow.h -- Wrap Window with a simple class
  *
  *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
@@ -28,47 +28,35 @@
 
 #include "xdisplay.h"
 
-class CXWindow ;
-
-typedef std::shared_ptr<CXWindow> CXWindowPtr ;
-
 class CXWindow
 {
-private:
-  struct _private_constructor_tag
-    { explicit _private_constructor_tag() = default; };
-
 public:
-  static CXWindowPtr CreateWindow(CXDisplayPtr& display,
-                                  int x, int y,
-                                  unsigned int width,
-                                  unsigned int height,
-                                  unsigned int border_width,
-                                  unsigned long border,
-                                  unsigned long background,
-                                  int screen_num = USE_DEFAULT_SCREEN)
+  CXWindow(CXDisplayPtr& display, Window parent,
+           int x, int y,
+           unsigned int width, unsigned int height,
+           unsigned int border_width,
+           unsigned long border,
+           unsigned long background)
+    : _display(display)
   {
-    Window parent(display->GetRootWindow(screen_num)) ;
-    return std::make_shared<CXWindow>(display, parent,
-                                    x, y, width, height, 
-                                    border_width, border, background,
-                                    _private_constructor_tag{});
+    _window = XCreateSimpleWindow(*_display, parent,
+                                   x, y, width, height, 
+                                   border_width, border, background);
   }
-  
-  
-  static CXWindowPtr CreateWindow(CXDisplayPtr& display,
-                                  CXWindowPtr& parent,
-                                  int x, int y,
-                                  unsigned int width,
-                                  unsigned int height,
-                                  unsigned int border_width,
-                                  unsigned long border,
-                                  unsigned long background)
+
+  CXWindow(CXDisplayPtr& display,
+           int x, int y,
+           unsigned int width, unsigned int height,
+           unsigned int border_width,
+           unsigned long border,
+           unsigned long background,
+           int screen_num = USE_DEFAULT_SCREEN)
+    : _display(display)
   {
-    return std::make_shared<CXWindow>(display, *parent,
-                                    x, y, width, height, 
-                                    border_width, border, background,
-                                    _private_constructor_tag{});
+    Window parent(display->GetRootWindow(screen_num));
+    _window = XCreateSimpleWindow(*_display, parent,
+                                   x, y, width, height, 
+                                   border_width, border, background);
   }
 
   ~CXWindow()
@@ -113,29 +101,12 @@ public:
 
   void Unmap() const
   {
-    XUnmapWindow(*_display, _window) ;
-  }
-
-//
-// Only call via static member function OpenDisplay
-//
-  CXWindow(CXDisplayPtr& display, Window parent,
-           int x, int y,
-           unsigned int width, unsigned int height,
-           unsigned int border_width,
-           unsigned long border,
-           unsigned long background,
-           _private_constructor_tag)
-    : _display(display)
-  {
-    _window = XCreateSimpleWindow(*_display, parent,
-                                   x, y, width, height, 
-                                   border_width, border, background);
+    XUnmapWindow(*_display, _window);
   }
 
 private:
-  Window _window ;
-  CXDisplayPtr _display ;
-} ;
+  Window _window;
+  CXDisplayPtr _display;
+};
 
 #endif

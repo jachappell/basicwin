@@ -18,7 +18,7 @@ using namespace std ;
 #define TOO_SMALL 0
 #define BIG_ENOUGH 1
 
-static void draw_text(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
+static void draw_text(CXDisplayPtr& display, Window win, CXGC& gc,
                       XFontStruct *font_info,
                       unsigned int win_width, unsigned int win_height)
 {
@@ -38,13 +38,13 @@ static void draw_text(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
   font_height = font_info->ascent + font_info->descent;
 
   /* output text, centered on each line */
-  XDrawString(*display, *win, gc, (win_width - width1)/2, 
+  XDrawString(*display, win, gc, (win_width - width1)/2, 
               font_height,
               string1.c_str(), string1.length());
-  XDrawString(*display, *win, gc, (win_width - width2)/2, 
+  XDrawString(*display, win, gc, (win_width - width2)/2, 
               (int)(win_height - (2 * font_height)),
               string2.c_str(), string2.length());
-  XDrawString(*display, *win, gc, (win_width - width3)/2, 
+  XDrawString(*display, win, gc, (win_width - width3)/2, 
               (int)(win_height - font_height),
               string3.c_str(), string3.length());
 
@@ -72,19 +72,19 @@ static void draw_text(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
 
   initial_y_offset = win_height/2 - font_height - font_info->descent;
   x_offset = (int) win_width/4;
-  XDrawString(*display, *win, gc, x_offset, (int)initial_y_offset, 
+  XDrawString(*display, win, gc, x_offset, (int)initial_y_offset, 
               string4.c_str(), string4.length());
 
-  XDrawString(*display, *win, gc, x_offset, (int)initial_y_offset + 
+  XDrawString(*display, win, gc, x_offset, (int)initial_y_offset + 
               font_height, cd_height.c_str(), cd_height.length());
-  XDrawString(*display, *win, gc, x_offset, (int) initial_y_offset + 
+  XDrawString(*display, win, gc, x_offset, (int) initial_y_offset + 
               2 * font_height, cd_width.c_str(), cd_width.length());
-  XDrawString(*display, *win, gc, x_offset, (int) initial_y_offset + 
+  XDrawString(*display, win, gc, x_offset, (int) initial_y_offset + 
               3 * font_height, cd_depth.c_str(), cd_depth.length());
 }
 
 
-static void draw_graphics(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
+static void draw_graphics(CXDisplayPtr& display, Window win, CXGC& gc,
                           unsigned int window_width,
                           unsigned int window_height)
 {
@@ -96,11 +96,11 @@ static void draw_graphics(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
   x = window_width/2 - width/2;  /* center */
   y = window_height/2 - height/2;
 
-  XDrawRectangle(*display, *win, gc, x, y, width, height);
+  XDrawRectangle(*display, win, gc, x, y, width, height);
 }
 
 
-static void TooSmall(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
+static void TooSmall(CXDisplayPtr& display, Window win, CXGC& gc,
                      XFontStruct *font_info)
 {
   string string1("Too Small");
@@ -110,7 +110,7 @@ static void TooSmall(CXDisplayPtr& display, CXWindowPtr& win, CXGC& gc,
   x_offset = 2;
 
   /* output text, centered on each line */
-  XDrawString(*display, *win, gc, x_offset, y_offset, string1.c_str(), 
+  XDrawString(*display, win, gc, x_offset, y_offset, string1.c_str(), 
               string1.length());
 }
 
@@ -144,10 +144,10 @@ int main(int argc, char **argv)
     unsigned int border_width(4);    /* four pixels */
 
     /* create opaque window */
-    auto win(CXWindow::CreateWindow(display,
+    CXWindow win(display,
                     x, y, width, height, border_width,
                     display->GetBlackPixel(),
-                    display->GetWhitePixel())) ;
+                    display->GetWhitePixel()) ;
 
     /* Get available icon sizes from Window manager */
 
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
     }
 
     /* Create pixmap of depth 1 (bitmap) for icon */
-    Pixmap icon_pixmap = XCreateBitmapFromData(*display, *win,
+    Pixmap icon_pixmap = XCreateBitmapFromData(*display, win,
                                         icon_bitmap_bits, 
                                         icon_bitmap_width,
                                         icon_bitmap_height);
@@ -224,12 +224,12 @@ int main(int argc, char **argv)
     string res_class("Basicwin");
     class_hints->res_class = const_cast<char *>(res_class.c_str());
 
-    XSetWMProperties(*display, *win, &windowName, &iconName, 
+    XSetWMProperties(*display, win, &windowName, &iconName, 
                    argv, argc, size_hints, wm_hints, 
                    class_hints);
 
     /* Select event types wanted */
-    XSelectInput(*display, *win, ExposureMask | KeyPressMask | 
+    XSelectInput(*display, win, ExposureMask | KeyPressMask | 
                ButtonPressMask | StructureNotifyMask);
 
     CXFont font_info(display, "9x15");
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
     unsigned long valuemask = 0; /* ignore XGCvalues and use defaults */
     XGCValues values;
 
-    CXGC gc(display, *win, valuemask, &values) ;
+    CXGC gc(display, win, valuemask, &values) ;
   
     /* specify font */
     gc.SetFont(font_info.Id());
@@ -257,7 +257,7 @@ int main(int argc, char **argv)
     gc.SetDashes(dash_offset, dash_list, list_length);
 
     /* Display window */
-    win->Map();
+    win.Map();
 
     /* get events, use first to display text and graphics */
     XEvent report;
