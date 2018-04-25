@@ -6,7 +6,7 @@
 template<class T> class CXViewPort
 {
 public:
-  CXViewPort(CXWindowPtr& window,
+  CXViewPort(CXWindow *window,
              T xmax, T ymax, T xmin, T ymin)
     : window_(window)
     , Xmax_(xmax)
@@ -17,7 +17,7 @@ public:
     Resize() ;
   }
   
-  CXViewPort(CXWindowPtr& window,
+  CXViewPort(CXWindow *window,
              T xmax, T ymax, T xmin, T ymin,
              unsigned int width, unsigned int height)
     : window_(window)
@@ -73,13 +73,12 @@ public:
     return (int)(((y - Ymax_) * (T)height_) / (Ymin_ - Ymax_)) ;
   }
 
-  CXWindowPtr& WindowPtr() { return window_ ; }
   CXDisplayPtr& DisplayPtr() { return window_->Display() ; }
 
   operator Window () const { return *window_ ; }
 
 private:
-  CXWindowPtr window_ ;
+  CXWindow *window_ ;
 
   unsigned int width_ ;
   unsigned int height_ ;
