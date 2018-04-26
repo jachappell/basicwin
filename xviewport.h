@@ -73,7 +73,7 @@ public:
     return (int)(((y - Ymax_) * (T)height_) / (Ymin_ - Ymax_)) ;
   }
 
-  CXDisplayPtr& DisplayPtr() { return window_->Display() ; }
+  CXDisplay::Ptr& DisplayPtr() { return window_->Display() ; }
 
   operator Window () const { return *window_ ; }
 

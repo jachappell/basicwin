@@ -31,7 +31,7 @@
 class CXWindow
 {
 public:
-  CXWindow(CXDisplayPtr& display, Window parent,
+  CXWindow(CXDisplay::Ptr& display, Window parent,
            int x, int y,
            unsigned int width, unsigned int height,
            unsigned int border_width,
@@ -44,13 +44,13 @@ public:
                                    border_width, border, background);
   }
 
-  CXWindow(CXDisplayPtr& display,
+  CXWindow(CXDisplay::Ptr& display,
            int x, int y,
            unsigned int width, unsigned int height,
            unsigned int border_width,
            unsigned long border,
            unsigned long background,
-           int screen_num = USE_DEFAULT_SCREEN)
+           int screen_num = CXDisplay::USE_DEFAULT_SCREEN)
     : _display(display)
   {
     Window parent(display->GetRootWindow(screen_num));
@@ -80,7 +80,7 @@ public:
 
   operator Window () const { return _window ; }
 
-  CXDisplayPtr& Display() { return _display ; }
+  CXDisplay::Ptr& Display() { return _display ; }
 
   void GetWindowAttributes(XWindowAttributes &attr) const
   {
@@ -106,7 +106,7 @@ public:
 
 private:
   Window _window;
-  CXDisplayPtr _display;
+  CXDisplay::Ptr _display;
 };
 
 #endif

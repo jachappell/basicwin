@@ -1,6 +1,6 @@
 /*******************************************************************
  *
- * xfont.h -- Define a wrapper around a XFontStruct pointer 
+ * xshared.h -- provide support for shared pointer
  *
  *  Copyright (C) 2018 by James A. Chappell (rlrrlrll@gmail.com)
  *
@@ -23,54 +23,18 @@
  *  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __XFONT_H__
-#define __XFONT_H__
+#ifndef __XSHARED__
+#define __XSHARED__
 
-#include "xdisplay.h"
+#include <memory>
 
-class CXFont
+template <class T> class xshared
 {
 public:
-  CXFont(CXDisplay::Ptr display, const char *fontname) :
-    _display(display)
-  {
-    _font = XLoadQueryFont(*_display, fontname) ;
-    if (!_font)
-    {
-      throw CXFont::Exception();
-    }
-  }
-
-  ~CXFont()
-  {
-    XFreeFont(*_display, _font);
-  }
-
-  CXFont() = delete; 
-   // no copy
-  CXFont(const CXFont&) = delete;
-  CXFont& operator=(const CXFont&) = delete;
-
-  class Exception : public std::exception
-  {
-  public:
-    virtual const char* what() const throw()
-    {
-      return "bad_CXFont"; // for now
-    }
-  };
-
-  XFontStruct* operator->() { return _font ; }
-  operator XFontStruct* () const { return _font ; }
-
-  Font Id() const { return _font->fid ; }
-
-  int FontHeight() const { return _font->ascent + _font->descent ; }
-  short MaxCharWidth() const { return _font->max_bounds.width ; }
-
-private:
-  XFontStruct *_font ;
-  CXDisplay::Ptr _display ;
+   typedef std::shared_ptr<T> Ptr;
+protected:
+   struct _private_constructor_tag
+    { explicit _private_constructor_tag() = default; };
 };
 
 #endif

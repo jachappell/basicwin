@@ -26,24 +26,18 @@
 #ifndef __xdisplay_h__
 #define __xdisplay_h__
 
+#include "xshared.h"
+
 #include <X11/Xlib.h>
 
 #include <exception>
-#include <memory>
 
-#define USE_DEFAULT_SCREEN -1
-
-class CXDisplay ;
-
-typedef std::shared_ptr<CXDisplay> CXDisplayPtr ;
-
-class CXDisplay
+class CXDisplay : public xshared<CXDisplay>
 {
-private:
-  struct _private_constructor_tag
-    { explicit _private_constructor_tag() = default; };
 public:
-  static CXDisplayPtr OpenDisplay(const char *display_name = NULL) ;
+  static constexpr int USE_DEFAULT_SCREEN = -1;
+
+  static Ptr OpenDisplay(const char *display_name = NULL) ;
 
   ~CXDisplay();
 
@@ -100,7 +94,7 @@ private:
 };
 
 
-inline CXDisplayPtr CXDisplay::OpenDisplay(const char *display_name)
+inline CXDisplay::Ptr CXDisplay::OpenDisplay(const char *display_name)
 {
   return std::make_shared<CXDisplay>(display_name, _private_constructor_tag{});
 }
