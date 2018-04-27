@@ -28,15 +28,50 @@
 
 #include "xdisplay.h"
 
-class CXWindow
+class CXWindow : public xshared<CXWindow>
 {
 public:
-  CXWindow(CXDisplay::Ptr& display, Window parent,
+  static Ptr CreateWindow(const CXDisplay::Ptr& display, Window parent,
            int x, int y,
            unsigned int width, unsigned int height,
            unsigned int border_width,
            unsigned long border,
            unsigned long background)
+  {
+     return std::make_shared<CXWindow>(display, parent,
+                                       x, y,
+                                       width, height,
+                                       border_width,
+                                       border,
+                                       background,
+                                       _private_constructor_tag{});
+  }
+
+  static Ptr CreateWindow(const CXDisplay::Ptr& display,
+           int x, int y,
+           unsigned int width, unsigned int height,
+           unsigned int border_width,
+           unsigned long border,
+           unsigned long background,
+           int screen_num = CXDisplay::USE_DEFAULT_SCREEN)
+  {
+    return std::make_shared<CXWindow>(display,
+                                      x, y,
+                                      width, height,
+                                      border_width,
+                                      border,
+                                      background,
+                                      screen_num,
+                                      _private_constructor_tag{});
+  }
+
+  CXWindow(const CXDisplay::Ptr& display, Window parent,
+           int x, int y,
+           unsigned int width, unsigned int height,
+           unsigned int border_width,
+           unsigned long border,
+           unsigned long background,
+           _private_constructor_tag)
     : _display(display)
   {
     _window = XCreateSimpleWindow(*_display, parent,
@@ -44,13 +79,14 @@ public:
                                    border_width, border, background);
   }
 
-  CXWindow(CXDisplay::Ptr& display,
+  CXWindow(const CXDisplay::Ptr& display,
            int x, int y,
            unsigned int width, unsigned int height,
            unsigned int border_width,
            unsigned long border,
            unsigned long background,
-           int screen_num = CXDisplay::USE_DEFAULT_SCREEN)
+           int screen_num,
+           _private_constructor_tag)
     : _display(display)
   {
     Window parent(display->GetRootWindow(screen_num));

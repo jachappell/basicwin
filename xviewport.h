@@ -6,7 +6,7 @@
 template<class T> class CXViewPort
 {
 public:
-  CXViewPort(CXWindow *window,
+  CXViewPort(const CXWindow::Ptr& window,
              T xmax, T ymax, T xmin, T ymin)
     : window_(window)
     , Xmax_(xmax)
@@ -17,7 +17,7 @@ public:
     Resize() ;
   }
   
-  CXViewPort(CXWindow *window,
+  CXViewPort(const CXWindow::Ptr& window,
              T xmax, T ymax, T xmin, T ymin,
              unsigned int width, unsigned int height)
     : window_(window)
@@ -55,30 +55,32 @@ public:
 
   T x(int ix) const
   {
-    return ((T)ix * (Xmax_ - Xmin_) / (T)width_) + Xmin_ ;
+    return (static_cast<T>(ix) * (Xmax_ - Xmin_) /
+            static_cast<T>(width_)) + Xmin_;
   }
 
   T y(int iy) const
   {
-    return ((T)iy * (Ymin_ - Ymax_) / (T)height_) + Ymax_ ;
+    return (static_cast<T>(iy) * (Ymin_ - Ymax_) /
+            static_cast<T>(height_)) + Ymax_;
   }
 
   int ix(T x) const
   {
-    return (int)(((x - Xmin_) * (T)width_) / (Xmax_ - Xmin_)) ;
+    return static_cast<int>(((x - Xmin_) * (T)width_) / (Xmax_ - Xmin_));
   }
 
   int iy(T y) const
   {
-    return (int)(((y - Ymax_) * (T)height_) / (Ymin_ - Ymax_)) ;
+    return static_cast<int>(((y - Ymax_) * (T)height_) / (Ymin_ - Ymax_));
   }
 
   CXDisplay::Ptr& DisplayPtr() { return window_->Display() ; }
 
-  operator Window () const { return *window_ ; }
+  operator Window () const { return *window_; }
 
 private:
-  CXWindow *window_ ;
+  CXWindow::Ptr window_ ;
 
   unsigned int width_ ;
   unsigned int height_ ;
@@ -86,7 +88,7 @@ private:
   T Ymax_ ;
   T Xmin_ ;
   T Ymin_ ;
-} ;
+};
 
 
 #endif

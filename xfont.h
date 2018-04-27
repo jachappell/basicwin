@@ -31,7 +31,7 @@
 class CXFont
 {
 public:
-  CXFont(CXDisplay::Ptr display, const char *fontname) :
+  CXFont(const CXDisplay::Ptr& display, const char *fontname) :
     _display(display)
   {
     _font = XLoadQueryFont(*_display, fontname) ;

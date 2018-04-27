@@ -31,7 +31,7 @@
 class CXGC
 {
 public:
-  CXGC(CXDisplay::Ptr& display, Drawable d,
+  CXGC(const CXDisplay::Ptr& display, Drawable d,
        unsigned long valuemask, XGCValues *values)
     : _display(display)
   {
