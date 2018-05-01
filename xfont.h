@@ -60,13 +60,13 @@ public:
     }
   };
 
-  XFontStruct* operator->() { return _font ; }
-  operator XFontStruct* () const { return _font ; }
+  const auto& operator->() { return _font ; }
+  operator const auto& () const { return _font ; }
 
-  Font Id() const { return _font->fid ; }
+  auto Id() const { return _font->fid ; }
 
-  int FontHeight() const { return _font->ascent + _font->descent ; }
-  short MaxCharWidth() const { return _font->max_bounds.width ; }
+  auto FontHeight() const { return _font->ascent + _font->descent ; }
+  auto MaxCharWidth() const { return _font->max_bounds.width ; }
 
 private:
   XFontStruct *_font ;

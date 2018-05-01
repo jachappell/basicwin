@@ -32,8 +32,8 @@ public:
   
   ~CXViewPort() {}
 
-  unsigned int height() const { return height_ ; }
-  unsigned int width() const { return width_ ; }
+  auto height() const { return height_ ; }
+  auto width() const { return width_ ; }
              
   void ViewPort(T xmax, T ymax, T xmin, T ymin)
   {
@@ -53,13 +53,13 @@ public:
     height_ = attr.height ;
   }
 
-  T x(int ix) const
+  auto x(int ix) const
   {
     return (static_cast<T>(ix) * (Xmax_ - Xmin_) /
             static_cast<T>(width_)) + Xmin_;
   }
 
-  T y(int iy) const
+  auto y(int iy) const
   {
     return (static_cast<T>(iy) * (Ymin_ - Ymax_) /
             static_cast<T>(height_)) + Ymax_;
@@ -75,7 +75,7 @@ public:
     return static_cast<int>(((y - Ymax_) * (T)height_) / (Ymin_ - Ymax_));
   }
 
-  CXDisplay::Ptr& DisplayPtr() { return window_->Display() ; }
+  const auto& DisplayPtr() { return window_->Display() ; }
 
   operator Window () const { return *window_; }
 

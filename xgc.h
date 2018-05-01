@@ -70,8 +70,8 @@ public:
     XSetDashes(*_display, _gc, dash_offset, dash_list, n) ;
   }
 
-  GC operator->() { return _gc ; }
-  operator GC () const { return _gc ; }
+  const auto& operator->() { return _gc ; }
+  operator const auto& () const { return _gc ; }
 
 private:
   GC _gc ;

@@ -56,8 +56,8 @@ public:
     }
   };
 
-  Display* operator->() { return _display ; }
-  operator Display* () const { return _display ; }
+  const auto& operator->() const { return _display ; }
+  operator const auto& () const { return _display ; }
 
   int GetScreenCount() const { return ScreenCount(_display) ; }
   int GetDefaultScreen() const { return DefaultScreen(_display) ; }
@@ -167,11 +167,9 @@ inline unsigned long CXDisplay::GetWhitePixel(int screen_num) const
 inline unsigned long
 CXDisplay::GetColor(const char *color_name, int screen_num) const
 {
-  Colormap cmap;
-
   XColor near_color, true_color;
 
-  cmap = DefaultColormap(_display,  screen(screen_num)) ;
+  auto cmap = DefaultColormap(_display,  screen(screen_num)) ;
 
   XAllocNamedColor(_display, cmap, color_name, &near_color, &true_color);
 
@@ -181,9 +179,9 @@ CXDisplay::GetColor(const char *color_name, int screen_num) const
 
 inline double CXDisplay::AspectRatio(int screen_num)
 {
-  int s = screen(screen_num);
+  auto s = screen(screen_num);
 
-  double aspect_ratio = static_cast<double>(GetDisplayHeight(s)
+  auto aspect_ratio = static_cast<double>(GetDisplayHeight(s)
                                          + GetDisplayHeightMM(s)) /
                         static_cast<double>(GetDisplayWidth(s)
                                          + GetDisplayWidthMM(s));

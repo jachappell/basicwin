@@ -31,7 +31,7 @@
 class CXWindow : public xshared<CXWindow>
 {
 public:
-  static Ptr CreateWindow(const CXDisplay::Ptr& display, Window parent,
+  static auto CreateWindow(const CXDisplay::Ptr& display, Window parent,
            int x, int y,
            unsigned int width, unsigned int height,
            unsigned int border_width,
@@ -47,7 +47,7 @@ public:
                                        _private_constructor_tag{});
   }
 
-  static Ptr CreateWindow(const CXDisplay::Ptr& display,
+  static auto CreateWindow(const CXDisplay::Ptr& display,
            int x, int y,
            unsigned int width, unsigned int height,
            unsigned int border_width,
@@ -114,9 +114,9 @@ public:
     }
   };
 
-  operator Window () const { return _window ; }
+  operator const auto& () const { return _window ; }
 
-  CXDisplay::Ptr& Display() { return _display ; }
+  const auto& Display() { return _display ; }
 
   void GetWindowAttributes(XWindowAttributes &attr) const
   {
