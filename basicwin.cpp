@@ -18,7 +18,8 @@ using namespace std ;
 #define TOO_SMALL 0
 #define BIG_ENOUGH 1
 
-static void draw_text(CXDisplay::Ptr& display, CXWindow::Ptr& win, CXGC& gc,
+static void draw_text(const CXDisplay::Ptr& display,
+                      const CXWindow::Ptr& win, const CXGC& gc,
                       XFontStruct *font_info,
                       unsigned int win_width, unsigned int win_height)
 {
@@ -84,7 +85,9 @@ static void draw_text(CXDisplay::Ptr& display, CXWindow::Ptr& win, CXGC& gc,
 }
 
 
-static void draw_graphics(CXDisplay::Ptr& display, CXWindow::Ptr& win, CXGC& gc,
+static void draw_graphics(const CXDisplay::Ptr& display,
+                          const CXWindow::Ptr& win,
+                          const CXGC& gc,
                           unsigned int window_width,
                           unsigned int window_height)
 {
@@ -100,7 +103,9 @@ static void draw_graphics(CXDisplay::Ptr& display, CXWindow::Ptr& win, CXGC& gc,
 }
 
 
-static void TooSmall(CXDisplay::Ptr& display, CXWindow::Ptr& win, CXGC& gc,
+static void TooSmall(const CXDisplay::Ptr& display,
+                     const CXWindow::Ptr& win,
+                     const CXGC& gc,
                      XFontStruct *font_info)
 {
   string string1("Too Small");

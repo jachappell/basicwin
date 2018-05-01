@@ -37,7 +37,7 @@ class CXDisplay : public xshared<CXDisplay>
 public:
   static constexpr int USE_DEFAULT_SCREEN = -1;
 
-  static Ptr OpenDisplay(const char *display_name = NULL) ;
+  static Ptr OpenDisplay(const char *display_name = nullptr) ;
 
   ~CXDisplay();
 
